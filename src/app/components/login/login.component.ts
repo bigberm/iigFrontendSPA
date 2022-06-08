@@ -29,10 +29,10 @@ import { Router } from '@angular/router';
     ],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-    valCheck: string[] = ['remember'];
+    //  valCheck: string[] = ['remember'];
 
-    passwordVal: string='';
-    usernameVal: string='';
+    passwordVal: string = '';
+    usernameVal: string = '';
 
     config: AppConfig;
 
@@ -68,9 +68,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     OnclickReg() {
         this.router.navigateByUrl('pages/registerform');
     }
-    CheckValid(){
-      console.log(this.passwordVal);
-      console.log(this.usernameVal);
-      return this.passwordVal!="" || this.usernameVal!="";
+    CheckValid() {
+        return this.passwordVal == '' && this.usernameVal == '';
     }
 }
