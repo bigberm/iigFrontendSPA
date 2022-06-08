@@ -36,8 +36,8 @@ export class AppTopBarComponent implements OnInit {
     logout() {
      
         this.authenService.logedOut();
-        this.sessionService.removeItem("active-menu");
-        this.router.navigate(["/login"]);
+        // this.sessionService.removeItem("active-menu");
+        // this.router.navigate(["/login"]);
       }
     
 }
