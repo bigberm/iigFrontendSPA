@@ -1,0 +1,201 @@
+<form [formGroup]="newUserForm">
+    <div
+        class="surface-0 flex align-items-center justify-content-center min-w-screen overflow-hidden"
+    >
+        <div
+            class="grid justify-content-center p-2 lg:p-0"
+            style="min-width: 80%; margin-top: 50px"
+        >
+            <div class="col-12 mt-5 xl:mt-0 text-center">
+                <img
+                    src="assets/layout/images/logo-orange.svg"
+                    alt="Sakai logo"
+                    class="mb-5"
+                    style="width: 81px; height: 60px"
+                />
+            </div>
+            <div
+                class="col-12 xl:col-6"
+                style="
+                    border-radius: 56px;
+                    padding: 0.3rem;
+                    background: linear-gradient(
+                        180deg,
+                        rgba(247, 149, 48, 0.4) 10%,
+                        rgba(247, 149, 48, 0) 30%
+                    );
+                "
+            >
+                <div
+                    class="h-full w-full m-0 py-7 px-4"
+                    style="
+                        border-radius: 53px;
+                        background: linear-gradient(
+                            180deg,
+                            var(--surface-50) 38.9%,
+                            var(--surface-0)
+                        );
+                    "
+                >
+                    <div class="col-12">
+                        <div class="card">
+                            <h3>Register</h3>
+                            <div class="p-fluid p-formgrid grid">
+                                <div class="field col-12 md:col-6">
+                                    <label for="txtfirstName">Firstname</label>
+                                    <input
+                                        pInputText
+                                        id="txtfirstName"
+                                        type="text"
+                                        formControlName="txtfirstName"
+                                    />
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <label for="txtlastName">Lastname</label>
+                                    <input
+                                        pInputText
+                                        id="txtlastName"
+                                        type="text"
+                                        formControlName="txtlastName"
+                                    />
+                                </div>
+
+                                <div class="field col-12 md:col-6">
+                                    <label for="txtusername">Username</label>
+                                    <input
+                                        pInputText
+                                        id="txtusername"
+                                        type="text"
+                                        formControlName="txtusername"
+                                    />
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <label for="txtEmail">Email</label>
+                                    <input
+                                        pInputText
+                                        id="txtEmail"
+                                        type="text"
+                                        [pValidateOnly]="true"
+                                        [pKeyFilter]="emailFormat"
+                                        formControlName="txtEmail"
+                                        [(ngModel)]="emailVal"
+                                    />
+                                    <div
+                                        *ngIf="
+                                            txtEmail.invalid &&
+                                            (txtEmail.touched || txtEmail.dirty)
+                                        "
+                                        class="p-inline-message-error"
+                                    >
+                                        *Email is not valid
+                                    </div>
+                                </div>
+                                <div class="field col-12 md:col-12">
+                                    <label for="txtPassword1">Password</label>
+
+                                    <p-password formControlName="txtPassword1">
+                                        <ng-template pTemplate="header">
+                                            <h6>Pick a password</h6>
+                                        </ng-template>
+                                        <ng-template pTemplate="footer">
+                                            <p-divider></p-divider>
+                                            <p class="mt-2">Suggestions</p>
+                                            <ul
+                                                class="pl-2 ml-2 mt-0"
+                                                style="line-height: 1.5"
+                                            >
+                                                <li>At least one lowercase</li>
+                                                <li>At least one uppercase</li>
+                                                <li>At least one numeric</li>
+                                                <li>Minimum 6 characters</li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-password>
+                                </div>
+                                <div class="field col-12 md:col-12">
+                                    <label for="txtPassword2"
+                                        >Confirm Password</label
+                                    >
+                                    <p-password
+                                        formControlName="txtPassword2"
+                                        id="txtPassword2"
+                                        required
+                                        [feedback]="false"
+                                    ></p-password>
+                                    <div
+                                        *ngIf="
+                                            txtPassword2.value !=
+                                                txtPassword1.value &&
+                                            (txtPassword2.touched ||
+                                                txtPassword2.dirty)
+                                        "
+                                        class="alert alert-dange"
+                                    >
+                                        Password is not match.
+                                    </div>
+                                </div>
+                                <div class="field col-12 md:col-12">
+                                    <p-fileUpload
+                                        #fileInput
+                                        name="myfile[]"
+                                        [multiple]="false"
+                                        chooseLabel="Add Picture"
+                                        [showUploadButton]="false"
+                                        [showCancelButton]="false"
+                                        (onSelect)="onselectfile($event)"
+                                        accept="{{ acceptedFiles }}"
+                                        aria-multiselectable="false"
+                                        maxFileSize="1000000"
+                                    >
+                                        <!-- <ng-template pTemplate="toolbar"> </ng-template> -->
+                                        <ng-template pTemplate="content">
+                                            <!-- <ul *ngIf="uploadedFiles.length">
+                                                <li
+                                                    *ngFor="
+                                                        let file of uploadedFiles
+                                                    "
+                                                ></li>
+                                            </ul> -->
+                                        </ng-template>
+                                        <!-- <ng-template pTemplate="content" let-files>
+    
+  </ng-template> -->
+                                    </p-fileUpload>
+                                </div>
+                                <div class="field col-12 md:col-2">
+                                    <a
+                                        class="font-medium no-underline ml-2 text-left cursor-pointer"
+                                        style="color: var(--primary-color)"
+                                        (click)="OnBackLogin()"
+                                        >Back to login</a
+                                    >
+                                </div>
+                                <div
+                                    class="field col-12 md:col-8">
+                                  
+                                </div>
+                                <div class="field col-12 md:col-2"  style="text-align: right">
+                                    <button
+                                        pButton
+                                        pRipple
+                                        label="Save"
+                                        (click)="saveEvent()"
+                                        [disabled]="
+                                            !newUserForm.valid &&
+                                            !isValidPassword()
+                                        "
+                                        icon="pi pi-save"
+                                        class="p-button-sm p-m-1"
+                                    ></button>
+                                </div>
+                                <div class="field col-12 md:col-10">
+                                    <!-- <p-message severity="error"></p-message> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
