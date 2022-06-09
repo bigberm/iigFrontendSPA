@@ -38,6 +38,9 @@
                     "
                 >
                     <div class="col-12">
+                        <div class="field col-12 md:col-12">
+                            <p-messages [(value)]="msgs"></p-messages>
+                        </div>
                         <div class="card">
                             <h3>Register</h3>
                             <div class="p-fluid p-formgrid grid">
@@ -48,6 +51,7 @@
                                         id="txtfirstName"
                                         type="text"
                                         formControlName="txtfirstName"
+                                        [(ngModel)]="valFirstName"
                                     />
                                 </div>
                                 <div class="field col-12 md:col-6">
@@ -57,6 +61,7 @@
                                         id="txtlastName"
                                         type="text"
                                         formControlName="txtlastName"
+                                        [(ngModel)]="valLastName"
                                     />
                                 </div>
 
@@ -67,7 +72,18 @@
                                         id="txtusername"
                                         type="text"
                                         formControlName="txtusername"
+                                        [(ngModel)]="valUserName"
                                     />
+                                    <div
+                                        *ngIf="
+                                            txtusername.invalid &&
+                                            (txtusername.touched ||
+                                                txtusername.dirty)
+                                        "
+                                        class="p-inline-message-error"
+                                    >
+                                        *Username is not valid
+                                    </div>
                                 </div>
                                 <div class="field col-12 md:col-6">
                                     <label for="txtEmail">Email</label>
@@ -93,7 +109,10 @@
                                 <div class="field col-12 md:col-12">
                                     <label for="txtPassword1">Password</label>
 
-                                    <p-password formControlName="txtPassword1">
+                                    <p-password
+                                        formControlName="txtPassword1"
+                                        [(ngModel)]="valPassword1"
+                                    >
                                         <ng-template pTemplate="header">
                                             <h6>Pick a password</h6>
                                         </ng-template>
@@ -121,6 +140,7 @@
                                         id="txtPassword2"
                                         required
                                         [feedback]="false"
+                                        [(ngModel)]="valPassword2"
                                     ></p-password>
                                     <div
                                         *ngIf="
@@ -147,19 +167,8 @@
                                         aria-multiselectable="false"
                                         maxFileSize="1000000"
                                     >
-                                        <!-- <ng-template pTemplate="toolbar"> </ng-template> -->
                                         <ng-template pTemplate="content">
-                                            <!-- <ul *ngIf="uploadedFiles.length">
-                                                <li
-                                                    *ngFor="
-                                                        let file of uploadedFiles
-                                                    "
-                                                ></li>
-                                            </ul> -->
                                         </ng-template>
-                                        <!-- <ng-template pTemplate="content" let-files>
-    
-  </ng-template> -->
                                     </p-fileUpload>
                                 </div>
                                 <div class="field col-12 md:col-2">
@@ -170,11 +179,11 @@
                                         >Back to login</a
                                     >
                                 </div>
+                                <div class="field col-12 md:col-8"></div>
                                 <div
-                                    class="field col-12 md:col-8">
-                                  
-                                </div>
-                                <div class="field col-12 md:col-2"  style="text-align: right">
+                                    class="field col-12 md:col-2"
+                                    style="text-align: right"
+                                >
                                     <button
                                         pButton
                                         pRipple
@@ -187,9 +196,6 @@
                                         icon="pi pi-save"
                                         class="p-button-sm p-m-1"
                                     ></button>
-                                </div>
-                                <div class="field col-12 md:col-10">
-                                    <!-- <p-message severity="error"></p-message> -->
                                 </div>
                             </div>
                         </div>

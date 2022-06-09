@@ -145,7 +145,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UserprofileformComponent } from './components/userprofileform/userprofileform.component';
 import { AuthGuard } from './guard/auth.gaurd';
 import { AuthInterceptor } from './guard/auth.interceptor';
-import {KeyFilterModule} from 'primeng/keyfilter'
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @NgModule({
     imports: [
@@ -237,7 +237,7 @@ import {KeyFilterModule} from 'primeng/keyfilter'
         VirtualScrollerModule,
         AppCodeModule,
         StyleClassModule,
-        KeyFilterModule
+        KeyFilterModule,
     ],
     declarations: [
         AppComponent,

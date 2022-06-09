@@ -1,8 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
+import { UserService } from 'src/app/service/userservice';
+import { UserRegister } from 'src/app/viewmodel/userregister';
 
 @Component({
     selector: 'app-registerform',
@@ -19,13 +22,20 @@ export class RegisterformComponent implements OnInit {
     valUserName: string;
     newUserForm!: FormGroup;
     acceptedFiles: string = '.png, .jpg, .gif';
-    emailVal:string;
+    strFileType: string;
+    emailVal: string;
     emailFormat: RegExp =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     @ViewChild('fileInput') fileInput: FileUpload;
 
     uploadedFiles: any[] = [];
-    constructor(private service: MessageService,private router: Router) {}
+    fileImg: File;
+
+    constructor(
+        private service: MessageService,
+        private router: Router,
+        private userService: UserService
+    ) {}
 
     ngOnInit(): void {
         this.intitialForm();
@@ -39,26 +49,70 @@ export class RegisterformComponent implements OnInit {
     get txtEmail() {
         return this.newUserForm.get('txtEmail')!;
     }
-    saveEvent() {}
+    get txtusername() {
+        return this.newUserForm.get('txtusername')!;
+    }
+
+    saveEvent() {
+        //disable save button when form invalid
+        let newuser = new UserRegister();
+        newuser.UserName = this.valUserName;
+        newuser.Email = this.emailVal;
+        newuser.FirstName = this.valLastName;
+        newuser.LastName = this.valLastName;
+        newuser.Password = this.valPassword1;
+        newuser.ConfirmPassword = this.valPassword2;
+        if (this.fileImg.size > 0) {
+            newuser.ProfileImage = this.fileImg;
+        }
+
+        this.userService.createRegisterUser(newuser).subscribe(
+            (res) => {
+                console.log(res);
+                if (res == 'Success') {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Please go to login page.',
+                    });
+                } else {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: res,
+                    });
+                }
+            },
+            (err: HttpErrorResponse) => {}
+        );
+    }
     intitialForm() {
         this.newUserForm = new FormGroup({
             txtfirstName: new FormControl('', Validators.required),
             txtlastName: new FormControl('', Validators.required),
-            txtusername: new FormControl('', Validators.required),
+            txtusername: new FormControl('', [
+                Validators.required,
+                Validators.pattern('^[A-Za-z0-9_]+$'),
+                Validators.maxLength(12),
+            ]),
             txtPassword1: new FormControl('', [Validators.minLength(6)]),
             txtPassword2: new FormControl(''),
-            txtEmail: new FormControl("", [
+            txtEmail: new FormControl('', [
                 Validators.pattern(this.emailFormat),
                 Validators.email,
-              ]),
+            ]),
         });
     }
 
     onselectfile(event) {
-        this.uploadedFiles = [];
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
+        // this.uploadedFiles = [];
+        // for (let file of event.files) {
+        //     this.uploadedFiles.push(file);
+        //     this.strFileType = file.type;
+        // }
+        this.fileImg = <File>event.files[0];
     }
 
     isValidPassword(): boolean {
@@ -69,7 +123,7 @@ export class RegisterformComponent implements OnInit {
                 this.newUserForm.controls['txtPassword2'].touched)
         );
     }
-    OnBackLogin(){
+    OnBackLogin() {
         this.router.navigateByUrl('pages/login');
     }
 }

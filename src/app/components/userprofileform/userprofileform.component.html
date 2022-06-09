@@ -1,1 +1,156 @@
-<p>userprofileform works!</p>
+<div class="grid">
+    <div class="field col-12 md:col-12">
+        <p-messages [(value)]="msgs"></p-messages>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="card p-fluid">
+            <form [formGroup]="newUserForm">
+                <h3>User Profile</h3>
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12 md:col-6">
+                        <label for="txtusername">Username</label>
+                        <input
+                            pInputText
+                            id="txtusername"
+                            type="label"
+                            formControlName="txtusername"
+                            [(ngModel)]="valUserName"
+                            readonly="true"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label for="txtEmail">Email</label>
+                        <input
+                            pInputText
+                            id="txtEmail"
+                            type="text"
+                            [pValidateOnly]="true"
+                            [pKeyFilter]="emailFormat"
+                            formControlName="txtEmail"
+                            [(ngModel)]="emailVal"
+                        />
+                        <div
+                            *ngIf="
+                                txtEmail.invalid &&
+                                (txtEmail.touched || txtEmail.dirty)
+                            "
+                            class="p-inline-message-error"
+                        >
+                            *Email is not valid
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label for="txtfirstName">Firstname</label>
+                        <input
+                            pInputText
+                            id="txtfirstName"
+                            type="text"
+                            formControlName="txtfirstName"
+                            [(ngModel)]="valFirstName"
+                        />
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label for="txtlastName">Lastname</label>
+                        <input
+                            pInputText
+                            id="txtlastName"
+                            type="text"
+                            formControlName="txtlastName"
+                            [(ngModel)]="valLastName"
+                        />
+                    </div>
+
+                    <div class="field col-12 md:col-2">
+                        <button
+                            pButton
+                            pRipple
+                            label="Save"
+                            (click)="saveEvent()"
+                            [disabled]="!newUserForm.valid"
+                            icon="pi pi-save"
+                            class="p-button-sm p-m-1"
+                        ></button>
+                    </div>
+                    <div class="field col-12 md:col-4"></div>
+                    <div class="field col-12 md:col-3"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-2">
+        <div class="card p-fluid">
+            <!-- <div class="field col-12 md:col-12">
+                <div class="field col-12 md:col-3"> -->
+            <p-card>
+                <ng-template pTemplate="content">
+                    <img
+                        [src]="thumbnail"
+                        alt="profile picture"
+                        class="p-shadow-1"
+                        style="max-width: 150px; max-height: 150px"
+                    />
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <p-fileUpload
+                        name="userProfile[]"
+                        (onSelect)="onUpload($event)"
+                        accept="image/*"
+                        maxFileSize="1000000"
+                        chooseLabel="Browse"
+                        [auto]="true"
+                        mode="basic"
+                    >
+                    </p-fileUpload>
+                </ng-template>
+            </p-card>
+            <!-- </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="col-12 lg:col-6">
+        <div class="card p-fluid">
+            <h3>Change Password</h3>
+            <div class="field col-12 md:col-6">
+                <label for="txtPassword1">Current Password</label>
+                <p-password
+                    formControlName="txtPassword1"
+                    id="txtPassword1"
+                    required
+                    [feedback]="false"
+                    [(ngModel)]="valPassword1"
+                ></p-password>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label for="txtPassword2">New Password</label>
+
+                <p-password [(ngModel)]="valPassword2">
+                    <ng-template pTemplate="header">
+                        <h6>Pick a password</h6>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        <p-divider></p-divider>
+                        <p class="mt-2">Suggestions</p>
+                        <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                            <li>At least one lowercase</li>
+                            <li>At least one uppercase</li>
+                            <li>At least one numeric</li>
+                            <li>Minimum 6 characters</li>
+                        </ul>
+                    </ng-template>
+                </p-password>
+            </div>
+            <div class="field col-12 md:col-2">
+                <button
+                    pButton
+                    pRipple
+                    label="Save"
+                    (click)="savePasswordEvent()"
+                    [disabled]="!valPassword1 && !valPassword2"
+                    icon="pi pi-save"
+                    class="p-button-sm p-m-1"
+                ></button>
+            </div>
+        </div>
+    </div>
+</div>

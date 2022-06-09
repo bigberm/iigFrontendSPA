@@ -4,6 +4,7 @@ import { ConfigService } from '../../service/app.config.service';
 import { AppConfig } from '../../api/appconfig';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { Message, MessageService } from 'primeng/api';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -27,10 +28,11 @@ import { Router } from '@angular/router';
             }
         `,
     ],
+    providers: [MessageService],
 })
 export class LoginComponent implements OnInit, OnDestroy {
     //  valCheck: string[] = ['remember'];
-
+    msgs: Message[] = [];
     passwordVal: string = '';
     usernameVal: string = '';
 
@@ -41,7 +43,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(
         public configService: ConfigService,
         private authService: AuthenticationService,
-        private router: Router
+        private router: Router,
+        private service: MessageService
     ) {}
 
     ngOnInit(): void {
@@ -59,11 +62,23 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
     }
     OnLogin() {
-        this.authService
-            .login(this.usernameVal, this.passwordVal)
-            .subscribe((res) => {
-                console.log(res);
-            });
+        this.authService.login(this.usernameVal, this.passwordVal).subscribe(
+            (next) => {
+                localStorage.setItem('currentUser', this.usernameVal);
+            },
+            (error) => {
+                this.msgs = [
+                    {
+                        severity: 'error',
+                        summary: '',
+                        detail: 'Invalid username or password.',
+                    },
+                ];
+            },
+            () => {
+                this.router.navigate(['pages/userprofileform']);
+            }
+        );
     }
     OnclickReg() {
         this.router.navigateByUrl('pages/registerform');

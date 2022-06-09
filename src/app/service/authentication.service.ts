@@ -17,8 +17,7 @@ export class AuthenticationService {
     currentUser: any;
     roleAs: string;
     isLogin = false;
-    bIsAdmin: boolean = false;
-    // bIsAdminEmitter = new BehaviorSubject<boolean>(this.bIsAdmin);
+
     constructor(
         private http: HttpClient,
         private sessionService: SessionService
@@ -46,8 +45,8 @@ export class AuthenticationService {
                     console.log(response);
                     try {
                         localStorage.setItem('STATE', 'true');
-
-                        this.sessionService.setItem('toggleArrow', 'right');
+                        localStorage.setItem('userId', response.userId);
+                        localStorage.setItem('currentUser', response.userName);
                         if (JSON.stringify(response.access_token).length > 0) {
                             localStorage.setItem(
                                 'token',
@@ -91,9 +90,9 @@ export class AuthenticationService {
 
         return userVal;
     }
-    // getUserID() {
-    //     let idVal = localStorage.getItem('userId');
+    getUserID() {
+        let idVal = localStorage.getItem('userId');
 
-    //     return idVal;
-    // }
+        return idVal;
+    }
 }
