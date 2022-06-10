@@ -72,9 +72,11 @@ export class AuthenticationService {
         localStorage.setItem('currentUser', '');
         localStorage.removeItem('currentUser');
         localStorage.setItem('isLoggedin', 'false');
-
+        localStorage.removeItem('isLoggedin');
+        localStorage.setItem('STATE', 'false');
+        localStorage.removeItem('STATE');
         this.isLogin = false;
-        this.roleAs = '';
+       
         return of({ success: this.isLogin, role: '' });
     }
     isLoggedIn() {
