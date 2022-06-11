@@ -12,7 +12,7 @@ Download project from github.com
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Setup web api server in angular project
- -Change API Url 
+ -Change API Url in folder environment filename environment.prod.ts and environment.ts
  
  
 #Thank Sakai Tamplate free with primeNG
