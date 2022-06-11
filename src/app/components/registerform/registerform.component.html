@@ -73,6 +73,7 @@
                                         type="text"
                                         formControlName="txtusername"
                                         [(ngModel)]="valUserName"
+                                        (input)="CheckUserExist()"
                                     />
                                     <div
                                         *ngIf="

@@ -30,7 +30,7 @@ export class RegisterformComponent implements OnInit {
 
     uploadedFiles: any[] = [];
     fileImg: File;
-
+    isUserExist: boolean;
     constructor(
         private service: MessageService,
         private router: Router,
@@ -39,6 +39,7 @@ export class RegisterformComponent implements OnInit {
 
     ngOnInit(): void {
         this.intitialForm();
+        this.isUserExist = false;
     }
     get txtPassword1() {
         return this.newUserForm.get('txtPassword1')!;
@@ -97,7 +98,7 @@ export class RegisterformComponent implements OnInit {
                 Validators.pattern('^[A-Za-z0-9_]+$'),
                 Validators.maxLength(12),
             ]),
-            txtPassword1: new FormControl('', [Validators.minLength(6)]),
+            txtPassword1: new FormControl('', Validators.required),
             txtPassword2: new FormControl(''),
             txtEmail: new FormControl('', [
                 Validators.pattern(this.emailFormat),
@@ -125,5 +126,26 @@ export class RegisterformComponent implements OnInit {
     }
     OnBackLogin() {
         this.router.navigateByUrl('pages/login');
+    }
+    CheckUserExist() {
+        this.msgs = [];
+        if (this.valUserName != '') {
+            this.userService
+                .getUserNameIsExist(this.valUserName)
+                .subscribe((res) => {
+                    if (res == 'true') {
+                        this.isUserExist = true;
+
+                        this.msgs.push({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: 'Username alreay exist!',
+                        });
+                    }
+                });
+        }
+    }
+    get IsuserExists() {
+        return this.isUserExist!;
     }
 }

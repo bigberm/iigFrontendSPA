@@ -5,6 +5,7 @@ import { AppConfig } from '../../api/appconfig';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
+import { SessionService } from 'src/app/service/session.service';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -44,7 +45,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         public configService: ConfigService,
         private authService: AuthenticationService,
         private router: Router,
-        private service: MessageService
+        private service: MessageService,
+        private sessionService: SessionService
     ) {}
 
     ngOnInit(): void {
@@ -65,6 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.login(this.usernameVal, this.passwordVal).subscribe(
             (next) => {
                 localStorage.setItem('currentUser', this.usernameVal);
+                this.sessionService.setItem('currentUser', this.usernameVal);
             },
             (error) => {
                 this.msgs = [

@@ -47,14 +47,15 @@ export class AuthenticationService {
                         localStorage.setItem('STATE', 'true');
                         localStorage.setItem('userId', response.userId);
                         localStorage.setItem('currentUser', response.userName);
+                        this.sessionService.setItem(
+                            'currentUser',
+                            response.userName
+                        );
                         if (JSON.stringify(response.access_token).length > 0) {
                             localStorage.setItem(
                                 'token',
                                 response.access_token
                             );
-                            localStorage.setItem('isLoggedin', 'true');
-
-                            //  getUsalStorage.setItem('isLoggedin', 'true');
                         }
                     } catch (error) {
                         console.log(error.message);
@@ -71,12 +72,13 @@ export class AuthenticationService {
     logedOut() {
         localStorage.setItem('currentUser', '');
         localStorage.removeItem('currentUser');
-        localStorage.setItem('isLoggedin', 'false');
-        localStorage.removeItem('isLoggedin');
         localStorage.setItem('STATE', 'false');
         localStorage.removeItem('STATE');
+        localStorage.setItem('userId', '');
+        localStorage.removeItem('userId');
+        this.sessionService.removeItem('currentUser');
         this.isLogin = false;
-       
+
         return of({ success: this.isLogin, role: '' });
     }
     isLoggedIn() {

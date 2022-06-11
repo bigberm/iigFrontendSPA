@@ -34,6 +34,7 @@ export class UserprofileformComponent implements OnInit {
     uploadedFiles: any[] = [];
     fileImg: File;
     thumbnail: any;
+
     constructor(
         private service: MessageService,
         private router: Router,
@@ -44,6 +45,7 @@ export class UserprofileformComponent implements OnInit {
 
     ngOnInit(): void {
         this.intitialForm();
+
         if (this.authService.getUserID()) {
             //get user info
             this.userService
@@ -154,21 +156,60 @@ export class UserprofileformComponent implements OnInit {
     }
 
     onselectfile(event) {
-        // this.uploadedFiles = [];
-        // for (let file of event.files) {
-        //     this.uploadedFiles.push(file);
-        //     this.strFileType = file.type;
-        // }
         this.fileImg = <File>event.files[0];
     }
 
-    isValidPassword(): boolean {
-        return (
-            this.newUserForm.controls['txtPassword1'].value !=
-                this.newUserForm.controls['txtPassword2'].value &&
-            (this.newUserForm.controls['txtPassword2'].dirty ||
-                this.newUserForm.controls['txtPassword2'].touched)
-        );
+    savePasswordEvent() {
+        this.userService
+            .updatePassword({
+                UserId: this.authService.getUserID(),
+                OldPassword: this.valPassword1,
+                NewPassword: this.valPassword2,
+                ConfirmPassword: this.valPassword2,
+            })
+            .subscribe((res) => {
+                if (res == 'Success') {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Changed password',
+                    });
+                } else {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: res,
+                    });
+                }
+            });
     }
-    savePasswordEvent() {}
+    saveUserProfileEvent() {
+        this.userService
+            .updateUserProfile({
+                UserId: this.authService.getUserID(),
+                FirstName: this.valFirstName,
+                LastName: this.valLastName,
+                Email: this.emailVal,
+            })
+            .subscribe((res) => {
+                console.log(res);
+                if (res == 'Success') {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Data has been update',
+                    });
+                } else {
+                    this.msgs = [];
+                    this.msgs.push({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: res,
+                    });
+                }
+            });
+    }
 }

@@ -67,21 +67,18 @@ export class AuthGuard
     }
 
     checkUserLogin(route: ActivatedRouteSnapshot, url: any): boolean {
-        if (
-            this.authService.isLoggedIn() &&
-            this.authService.getCurrentUser() != null
-        ) {
+        if (this.getCurrentUser() != null && this.getCurrentUser() != '') {
             return true;
         }
         this.router.navigate(['pages/login']);
         return false;
     }
-    // getCurrentUser() {
-    //     try {
-    //         const userData = this.sessionService.getItem('currentUser');
-    //         return userData.userName;
-    //     } catch (err) {
-    //         return null;
-    //     }
-    // }
+    getCurrentUser() {
+        try {
+            const userData = this.sessionService.getItem('currentUser');
+            return userData;
+        } catch (err) {
+            return null;
+        }
+    }
 }

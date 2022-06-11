@@ -31,22 +31,13 @@
             'layout-topbar-menu-mobile-active': appMain.topMenuActive
         }"
     >
-        <!-- <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-calendar"></i>
-            <span>Calendar</span>
-        </a>
-        <a href="#" class="p-link layout-topbar-button">
-            <i class="pi pi-cog"></i>
-            <span>Settings</span>
-        </a> -->
-        <a
-            href=""
+        <div
             class="p-link layout-topbar-button"
             (click)="userdetails.toggle($event)"
         >
             <i class="pi pi-user"></i>
             <span>Profile</span>
-        </a>
+        </div>
         <p-tieredMenu #userdetails [model]="menuitems" [popup]="true">
         </p-tieredMenu>
     </div>

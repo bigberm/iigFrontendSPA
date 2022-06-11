@@ -30,6 +30,12 @@ export class UserService {
             formData
         );
     }
+    updatePassword(userPasswordModel: any): Observable<any> {
+        return this.http.post<any>(
+            this.baseUrl + 'api/Account/ChangePassword',
+            userPasswordModel
+        );
+    }
     getUserInfo(userId: string): Observable<any> {
         var data = 'userId=' + userId;
         return this.http.get<any>(
@@ -43,8 +49,14 @@ export class UserService {
         formData.append('userId', userId);
 
         return this.http.post(
-            this.baseUrl + 'Api/Account/UploadProfileImage',
+            this.baseUrl + 'api/Account/UploadProfileImage',
             formData
+        );
+    }
+    updateUserProfile(upsermodel: any): Observable<any> {
+        return this.http.post<any>(
+            this.baseUrl + 'api/Account/UpdateUserProfile',
+            upsermodel
         );
     }
 
@@ -53,6 +65,12 @@ export class UserService {
         return this.http.get(
             this.baseUrl + 'Api/Account/GetProfileImage?' + data,
             { responseType: 'blob' }
+        );
+    }
+    getUserNameIsExist(username: string): Observable<any> {
+        var data = 'username=' + username;
+        return this.http.get(
+            this.baseUrl + 'Api/Account/GetUserNameIsExist?' + data
         );
     }
 }
