@@ -29,7 +29,7 @@ export class RegisterformComponent implements OnInit {
     @ViewChild('fileInput') fileInput: FileUpload;
 
     uploadedFiles: any[] = [];
-    fileImg: File;
+    fileImg: File = null;
     isUserExist: boolean;
     constructor(
         private service: MessageService,
@@ -63,31 +63,38 @@ export class RegisterformComponent implements OnInit {
         newuser.LastName = this.valLastName;
         newuser.Password = this.valPassword1;
         newuser.ConfirmPassword = this.valPassword2;
-        if (this.fileImg.size > 0) {
-            newuser.ProfileImage = this.fileImg;
-        }
 
-        this.userService.createRegisterUser(newuser).subscribe(
-            (res) => {
-                console.log(res);
-                if (res == 'Success') {
-                    this.msgs = [];
-                    this.msgs.push({
-                        severity: 'success',
-                        summary: 'Success',
-                        detail: 'Please go to login page.',
-                    });
-                } else {
-                    this.msgs = [];
-                    this.msgs.push({
-                        severity: 'error',
-                        summary: 'Error',
-                        detail: res,
-                    });
-                }
-            },
-            (err: HttpErrorResponse) => {}
-        );
+        if (this.fileImg != null && this.fileImg.size > 0) {
+            newuser.ProfileImage = this.fileImg;
+            this.userService.createRegisterUser(newuser).subscribe(
+                (res) => {
+                    console.log(res);
+                    if (res == 'Success') {
+                        this.msgs = [];
+                        this.msgs.push({
+                            severity: 'success',
+                            summary: 'Success',
+                            detail: 'Please go to login page.',
+                        });
+                    } else {
+                        this.msgs = [];
+                        this.msgs.push({
+                            severity: 'error',
+                            summary: 'Error',
+                            detail: res,
+                        });
+                    }
+                },
+                (err: HttpErrorResponse) => {}
+            );
+        } else {
+            this.msgs = [];
+            this.msgs.push({
+                severity: 'error',
+                summary: 'warning',
+                detail: 'Please add profile picture',
+            });
+        }
     }
     intitialForm() {
         this.newUserForm = new FormGroup({
