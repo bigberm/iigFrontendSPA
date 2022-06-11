@@ -169,6 +169,8 @@ export class UserprofileformComponent implements OnInit {
             })
             .subscribe((res) => {
                 if (res == 'Success') {
+                    this.valPassword1 = '';
+                    this.valPassword2 = '';
                     this.msgs = [];
                     this.msgs.push({
                         severity: 'success',
